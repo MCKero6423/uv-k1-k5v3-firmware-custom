@@ -9,6 +9,8 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
+option(ENABLE_BYPASS_BATTERY_CHECK "Bypass battery/voltage check for EEPROM recovery (e.g. PY32 K6)" OFF)
+
 set(CMAKE_PROJECT_NAME f4hwn)
 
 # Enable compile command to ease indexing with e.g. clangd

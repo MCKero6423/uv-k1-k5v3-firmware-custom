@@ -1152,13 +1152,17 @@ void RADIO_PrepareTX(void)
     } else if (gCurrentVfo->BUSY_CHANNEL_LOCK && gCurrentFunction == FUNCTION_RECEIVE) {
         // busy RX'ing a station
         State = VFO_STATE_BUSY;
+#if !defined(ENABLE_BYPASS_BATTERY_CHECK)
     } else if (gBatteryDisplayLevel == 0) {
-        // charge your battery !git co
+        // charge your battery
         State = VFO_STATE_BAT_LOW;
     } else if (gBatteryDisplayLevel > 6) {
-        // over voltage .. this is being a pain
+        // over voltage (e.g. corrupted EEPROM calibration -> false 600V reading)
         State = VFO_STATE_VOLTAGE_HIGH;
     }
+#else
+    }
+#endif
 #ifndef ENABLE_TX_WHEN_AM
     else if (gCurrentVfo->Modulation != MODULATION_FM) {
         // not allowed to TX if in AM mode

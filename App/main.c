@@ -201,7 +201,11 @@ void Main(void)
         gDebounceCounter = 0;
     }
 
+#if !defined(ENABLE_BYPASS_BATTERY_CHECK)
     if (!gChargingWithTypeC && gBatteryDisplayLevel == 0)
+#else
+    if (0) /* recovery: allow full boot even when level reads 0 (corrupted EEPROM) */
+#endif
     {
         FUNCTION_Select(FUNCTION_POWER_SAVE);
 

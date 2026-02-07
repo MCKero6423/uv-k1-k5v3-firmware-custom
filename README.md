@@ -287,6 +287,15 @@ Examples:
 ./compile-with-docker.sh Bandscope -DSQL_TONE=600
 ```
 
+**EEPROM recovery (e.g. K6 / PY32 with corrupted calibration, 600V false alarm, radio shuts down):**  
+Build a firmware that skips battery/voltage check so the radio stays on and you can enter the menu to run BatCal and fix EEPROM:
+
+```bash
+./compile-with-docker.sh Fusion -DENABLE_BYPASS_BATTERY_CHECK=ON
+```
+
+Flash the resulting `build/Fusion/firmware.bin`, then use **BatCal** and **BatTyp** in the menu to restore calibration. After that, re-flash a normal build (without `ENABLE_BYPASS_BATTERY_CHECK`) if you want voltage protection back.
+
 ### Notes
 
 - The first run may take a few minutes while Docker builds the base image.

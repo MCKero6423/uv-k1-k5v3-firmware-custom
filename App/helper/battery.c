@@ -134,7 +134,17 @@ void BATTERY_GetReadings(const bool bDisplayBatteryLevel)
     const uint8_t  PreviousBatteryLevel = gBatteryDisplayLevel;
     const uint16_t Voltage              = (gBatteryVoltages[0] + gBatteryVoltages[1] + gBatteryVoltages[2] + gBatteryVoltages[3]) / 4;
 
-    gBatteryVoltageAverage = (Voltage * 760) / gBatteryCalibration[3];
+    /* Avoid div-by-zero when EEPROM/calibration corrupted (e.g. all 0) */
+    uint16_t cal = gBatteryCalibration[3];
+    if (cal == 0)
+        cal = 760;
+    gBatteryVoltageAverage = (Voltage * 760) / cal;
+
+#ifdef ENABLE_BYPASS_BATTERY_CHECK
+    /* Recovery mode: never report overvoltage so radio stays usable to fix EEPROM */
+    if (gBatteryVoltageAverage > 890)
+        gBatteryVoltageAverage = 750; /* clamp to sane display value */
+#endif
 
     if(gBatteryVoltageAverage > 890)
         gBatteryDisplayLevel = 7; // battery overvoltage

@@ -171,6 +171,9 @@ enable_feature(ENABLE_BLMIN_TMP_OFF)
 enable_feature(ENABLE_SCAN_RANGES)
 enable_feature(ENABLE_NAVIG_LEFT_RIGHT)
 
+# EEPROM recovery: ignore voltage/battery check so radio stays on with corrupted calib
+enable_feature(ENABLE_BYPASS_BATTERY_CHECK)
+
 # ---- CONTRIB MODS ----
 
 # Thank you @markusb
